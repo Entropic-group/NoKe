@@ -1,0 +1,33 @@
+[project]
+name = "fake-news"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "awscli>=1.40.16",
+    "dvc>=3.59.2",
+    "editdistance>=0.8.1",
+    "fastapi>=0.115.12",
+    "gensim>=4.3.3",
+    "great-expectations>=1.4.4",
+    "httptools>=0.6.4",
+    "ipykernel>=6.29.5",
+    "matplotlib>=3.10.3",
+    "mlflow>=2.22.0",
+    "nrclex>=3.0.0",
+    "pip-chill>=1.0.3",
+    "plotly>=6.1.0",
+    "pytest>=8.3.5",
+    "python-dotenv>=1.1.0",
+    "pytorch-lightning>=2.5.1.post0",
+    "scikit-learn>=1.6.1",
+    "shap>=0.47.2",
+    "torchvision>=0.22.0",
+    "transformers>=4.51.3",
+    "uvicorn>=0.34.2",
+    "uvloop>=0.21.0",
+    "vadersentiment>=3.3.2",
+    "watchgod>=0.8.2",
+    "websockets>=15.0.1",
+]
