@@ -1,44 +1,36 @@
-# Fake News Detector Powered By Machine Learning
+# NoKe: A Fake News Detector Powered by Machine Learning 
 
-A complete example of building an end-to-end machine learning project from initial idea to deployment. 
+This project is a machine learning application that detects fake news using a variety of models and techniques.
 
-![](assets/shorter_live_run.gif)
+## Technologies and Concepts
 
-This repo accompanies the blog post series describing how to build a fake news detection application. The posts included here:
+* **Machine Learning models** including a baseline `Random Forest` implemented with `Scikit-learn` and a more advanced `RoBERTa` model built using HuggingFace Transformers` and `PyTorch Lightning`.
+* **Natural Language Processing techniques**, including `TF-IDF vectorization` for traditional models and transformer-based representations for deep learning.
+* **Custom feature engineering pipeline**, abstracted through dedicated featurizer classes that support training, caching, and serialization for consistent preprocessing.
+* **Model evaluation** using standard classification metrics such as `F1 score, accuracy, AUC, and confusion matrix`, supported by the `scikit-learn metrics` suite.
+* **Model interpretation and error analysis** enabled by `SHAP` (Shapley Additive Explanations) to provide insight into feature importance and decision boundaries.
+* **Data version control** and pipeline reproducibility managed using `DVC` (Data Version Control).
+* **Experiment tracking and configuration** handled through structured logging and `MLflow` integration.
+* **Test infrastructure** including unit and integration tests using `PyTest and data validation with `Great Expectations`.
+* **Deployment-ready backend** implemented using `FastAPI`, exposing RESTful endpoints.
+* **`Docker` for deployment workflow, and `GitHub actions` for constinous integration (`CI`)**.
+* **Web browser integration** through a custom `Chrome extension` that interfaces with the deployed model for direct content evaluation.
 
-- [Initial Setup and Tooling](https://www.mihaileric.com/posts/setting-up-a-machine-learning-project/): Describes project ideation, setting up your repository, and initial project tooling. 
+## Get started
+This project uses [uv](https://docs.astral.sh/uv/) as project manager. To install it, follow the instruction [here](https://docs.astral.sh/uv/getting-started/installation/) for your operating system.
 
-- [Exploratory Data Analysis](https://www.mihaileric.com/posts/performing-exploratory-data-analysis/): Describes how to acquire a dataset and perform exploratory data analysis with tools like [Pandas](https://pandas.pydata.org/) in order to better understand the problem.
-
-- [Building a V1 Model Training/Testing Pipeline](https://www.mihaileric.com/posts/machine-learning-project-model-v1/): Describes how to get a functional training/evaluation pipeline for the first ML model (a random-forest classifier), including how to properly test various parts of your pipeline.
-
-- [Error Analysis and Model V2](https://www.mihaileric.com/posts/machine-learning-project-error-analysis-model-v2/): Describes how to interpret what your first model has learned through feature analysis (via techniques like [Shapley values](https://christophm.github.io/interpretable-ml-book/shapley.html)) and error analysis. Also works toward a second model powered by [Roberta](https://ai.facebook.com/blog/roberta-an-optimized-method-for-pretraining-self-supervised-nlp-systems/). 
-
-- [Model Deployment and Continuous Integration](https://www.mihaileric.com/posts/machine-learning-project-model-deployment/): Describes how to deploy your model using [FastAPI](https://fastapi.tiangolo.com/) and [Docker](https://www.docker.com/) and build an accompanying Chrome extension. Also illustrates key components of a continuous integration system for collaborating on the application with other team members in a scalable and reproducible fashion.
-
-## Features
-
-* **Random forest classifier** powered by [Scikit-learn](https://scikit-learn.org/stable/).
-* **RoBERTa** model powered by [HuggingFace Transformers](https://huggingface.co/transformers/) and [PyTorch Lightning](https://github.com/PyTorchLightning/pytorch-lightning).
-* **Data versioning** and configurable train/test pipelines using [DVC](https://github.com/iterative/dvc).
-* **Exploratory data analysis** using [Pandas](https://pandas.pydata.org/).
-* **Experiment tracking** and **logging** via [MLFlow](https://mlflow.org/).
-* **Continuous integration** with [Github actions](https://github.com/features/actions).
-* **Functionality tests** powered by [PyTest](https://docs.pytest.org/en/stable/) and [Great Expectations](https://greatexpectations.io/).
-* **Error** and **model feature analysis** via [SHAP](https://github.com/slundberg/shap).
-* **Production-ready server** via [FastAPI](https://fastapi.tiangolo.com/) and [Gunicorn](https://gunicorn.org/).
-* **Chrome extension** for interacting with a model in the [browser](https://chrome.google.com/webstore/category/extensions?hl=en).
-
-## How to Use It
-
-Go to the root directory of the repo and run:
+Once `uv` is installed, clone the repository:
 ```
-pip install -r requirements.txt
+git clone [REPO LINK HERE]
 ```
 
-Download the data from [this link](https://github.com/Tariq60/LIAR-PLUS/tree/master/dataset/tsv) into `data/raw`.
+Now, activate the virtual environment and get all the dependencies installed: 
+```
+uv venv
+uv sync
+```
 
-You're ready to go!
+Get the data (training, testing, and valiation data) from [this repository](https://github.com/Tariq60/LIAR-PLUS/tree/master/dataset/tsv) and put it in `data/raw`.
 
 ### Train
 
@@ -61,19 +53,18 @@ INFO - 2021-01-21 21:26:59,584 - train.py - Val metrics: {'val f1': 0.7587628865
 
 ### Deploy
 
-Once you have successfully trained a model using the step above, you should have a model checkpoint saved in `model_checkpoints/random_forest`.
-
-Now build your deployment Docker image:
+Hving trained the model, you can now deploy it. Build your deployment Docker image (this may take some minutes):
 ```
 docker build . -f deploy/Dockerfile.serve -t fake-news-deploy
 ```
 
-Once your image is built, you can run the model locally via a REST API with:
+Now, run the model locally via a REST API with:
 ```
 docker run -p 8000:80 -e MODEL_DIR="/home/fake-news/random_forest" -e MODULE_NAME="fake_news.server.main" fake-news-deploy
 ```
 
-From here you can interact with the API using [Postman](https://www.postman.com/) or through a simple cURL request:
+It should now be possible to interact with the API. For instance, you can do:
 ```
-curl -X POST http://127.0.0.1:8000/api/predict-fakeness -d '{"text": "some example string"}'
+curl -X POST http://127.0.0.1:8000/api/predict-fakeness -d '{"text": "you can write some string here :)"}'
 ```
+Tools like `Postman` can also be used.
