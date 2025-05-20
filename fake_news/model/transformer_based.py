@@ -122,7 +122,7 @@ class RobertaModel(Model):
         expected_labels = [datapoint.label for datapoint in eval_datapoints]
         predicted_proba = self.predict(eval_datapoints)
         predicted_labels = np.argmax(predicted_proba, axis=1)
-        # TODO (mihail): Refactor this section below with repeated in RF model
+        
         accuracy = accuracy_score(expected_labels, predicted_labels)
         f1 = f1_score(expected_labels, predicted_labels)
         auc = roc_auc_score(expected_labels, predicted_proba[:, 1])

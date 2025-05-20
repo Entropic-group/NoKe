@@ -55,7 +55,7 @@ def extract_manual_features(datapoints: List[Datapoint], optimal_credit_bins: Di
         features["speaker_title"] = datapoint.speaker_title
         features["state_info"] = datapoint.state_info
         features["party_affiliation"] = datapoint.party_affiliation
-        # Compute credit score features
+        #  credit score features
         datapoint = dict(datapoint)
         for feat in ["barely_true_count", "false_count", "half_true_count", "mostly_true_count", "pants_fire_count"]:
             features[feat] = str(compute_bin_idx(datapoint[feat], optimal_credit_bins[feat]))
@@ -80,8 +80,7 @@ def construct_datapoint(input: str) -> Datapoint:
 
 class TreeFeaturizer(object):
     def __init__(self, featurizer_cache_path: str, config: Optional[Dict] = None):
-        # NOTE: Here you can add feature caching which helps if it's too expensive
-        # to compute features from scratch for each run
+        # to compute features (scratch) for each run
         if os.path.exists(featurizer_cache_path):
             LOGGER.info("Loading featurizer from cache...")
             with open(featurizer_cache_path, "rb") as f:
@@ -89,7 +88,7 @@ class TreeFeaturizer(object):
         else:
             LOGGER.info("Creating featurizer from scratch...")
             base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-            # Load optimal credit bins
+            # optimal credit bins
             with open(os.path.join(base_dir, config["credit_bins_path"])) as f:
                 optimal_credit_bins = json.load(f)
             dict_featurizer = DictVectorizer()
@@ -139,17 +138,16 @@ def compute_bin_idx(val: float, bins: List[float]) -> int:
             return idx
 
 
-# NOTE: Making sure that all normalization operations preserve immutability of inputs
 def normalize_labels(datapoints: List[Dict]) -> List[Dict]:
     normalized_datapoints = []
     for datapoint in datapoints:
         label = datapoint.get("label")
         if label is None:
-            continue  # Skip datapoint if label is missing
+            continue  # skip datapoint if label is missing
 
         normalized_label = label.lower().strip()
         if normalized_label not in SIX_WAY_LABEL_TO_BINARY:
-            continue  # Skip datapoint if label is not recognized
+            continue  # skip datapoint if label is not recognized
 
         normalized_datapoint = deepcopy(datapoint)
         normalized_datapoint["label"] = SIX_WAY_LABEL_TO_BINARY[normalized_label]
@@ -161,11 +159,10 @@ def normalize_labels(datapoints: List[Dict]) -> List[Dict]:
 def normalize_and_clean_speaker_title(datapoints: List[Dict]) -> List[Dict]:
     normalized_datapoints = []
     for datapoint in datapoints:
-        # First do simple cleaning
+        # simple cleaning
         normalized_datapoint = deepcopy(datapoint)
         old_speaker_title = normalized_datapoint["speaker_title"]
         
-        # Check if old_speaker_title is None before processing
         if old_speaker_title is not None:
             old_speaker_title = old_speaker_title.lower().strip().replace("-", " ")
             # Then canonicalize
@@ -199,7 +196,6 @@ def normalize_and_clean_state_info(datapoints: List[Dict]) -> List[Dict]:
         normalized_datapoint = deepcopy(datapoint)
         old_state_info = normalized_datapoint["state_info"]
         
-        # Check if old_state_info is None before attempting string operations
         if old_state_info is not None:
             old_state_info = old_state_info.lower().strip().replace("-", " ")
             if old_state_info in CANONICAL_STATE:
@@ -226,7 +222,7 @@ def normalize_and_clean_counts(datapoints: List[Dict]) -> List[Dict]:
                     else:
                         normalized_datapoint[count_col] = float(normalized_datapoint[count_col])
                 except (ValueError, TypeError):
-                    # Handle case where the value can't be converted to float
+                    # case: value can't be converted to float
                     normalized_datapoint[count_col] = float(0.0)  # or 0.0
         normalized_datapoints.append(normalized_datapoint)
     return normalized_datapoints

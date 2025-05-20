@@ -1,4 +1,4 @@
-FROM tiangolo/uvicorn-gunicorn-fastapi:python3.8 as base
+FROM tiangolo/uvicorn-gunicorn-fastapi:python3.11 as base
 
 ADD fake_news /home/fake-news/fake_news
 ADD requirements.txt /home/fake-news/

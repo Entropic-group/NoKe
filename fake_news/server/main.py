@@ -24,7 +24,6 @@ class Settings(BaseSettings):
 app = FastAPI()
 settings = Settings()
 
-# Enable CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -33,7 +32,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load model
+# load model
 config = {
     "model_output_path": settings.model_dir,
     "featurizer_output_path": settings.model_dir

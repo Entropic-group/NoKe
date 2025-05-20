@@ -26,7 +26,7 @@ class FakeNewsTorchDataset(torch.utils.data.Dataset):
                                   return_token_type_ids=True,
                                   return_attention_mask=True,
                                   return_special_tokens_mask=True)
-            # Only a single encoding since only a single datapoint tokenized
+            # only a single encoding, since only a single datapoint tokenized
             self.data.append({
                 "ids": tokenized.data["input_ids"].squeeze(),
                 "type_ids": tokenized.data["token_type_ids"].squeeze(),

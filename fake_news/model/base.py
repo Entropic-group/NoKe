@@ -16,11 +16,15 @@ class Model(ABC):
               val_datapoints: List[Datapoint],
               cache_featurizer: Optional[bool] = False) -> None:
         """
-        Performs training of model. The exact train implementations are model specific.
-        :param train_datapoints: List of train datapoints
-        :param val_datapoints: List of validation datapoints that can be used
-        :param cache_featurizer: Whether or not to cache the model featurizer
-        :return:
+        Trains the model using provided data.
+        
+        Parameters:
+            train_datapoints: Training dataset
+            val_datapoints: Validation dataset for model tuning
+            cache_featurizer: If True, caches the featurizer to improve performance
+            
+        Return:
+            None
         """
         pass
     
@@ -28,10 +32,13 @@ class Model(ABC):
     def predict(self, datapoints: List[Datapoint]) -> np.array:
         """
         Performs inference of model on collection of datapoints. Returns an
-        array of model predictions. This should only be called after the model
-        has been trained.
-        :param datapoints: List of datapoints to perform inference on
-        :return: Array of predictions
+        array of model predictions. 
+        
+        Parameters:
+            datapoints: List of datapoints to perform inference on
+        
+        Return: 
+            Array of predictions
         """
         pass
     
@@ -39,9 +46,13 @@ class Model(ABC):
     def compute_metrics(self, eval_datapoints: List[Datapoint], split: Optional[str] = None) -> Dict:
         """
         Compute a set of model-specifc metrics on the provided set of datapoints.
-        :param eval_datapoints: Datapoints to compute metrics for
-        :param split: Data split on which metrics are being computed
-        :return: A dictionary mapping from the name of the metric to its value
+        
+        Parameters:
+            eval_datapoints: Datapoints to compute metrics for
+            split: Data split on which metrics are being computed
+        
+        Return: 
+            A dictionary mapping from the name of the metric to its value
         """
         pass
     
@@ -49,7 +60,9 @@ class Model(ABC):
     def get_params(self) -> Dict:
         """
         Return the model-specific parameters such as number of hidden-units in the case
-        of a neural network or number of trees for a random forest
-        :return: Dictionary containing the model parameters
+        of a neural network 
+        
+        Returns:
+            Dictionary containing the model parameters
         """
         pass

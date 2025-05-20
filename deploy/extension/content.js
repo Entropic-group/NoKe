@@ -18,7 +18,7 @@ async function detectFakeNews(text) {
 
 document.addEventListener("mouseup", (event) => {
     if (spanSelection) {
-        // Reset and remove span selection
+        // reset and remove span selection
         document.body.removeChild(spanSelection);
         spanSelection = null;
     }
@@ -32,7 +32,7 @@ document.addEventListener("mouseup", (event) => {
     detectFakeNews(text)
         .then(res => res.json())
         .then(data => {
-            const imgURL = chrome.runtime.getURL("images/trump_amca_48.png");
+            const imgURL = chrome.runtime.getURL("images/a.png");
             const spanElem = document.createElement("span");
             
             spanElem.className = "popup-tag";
