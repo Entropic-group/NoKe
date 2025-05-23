@@ -1,6 +1,6 @@
 # NoKe: A Fake News Detector Powered by Machine Learning 
 
-This project is a machine learning application that detects fake news using a variety of models and techniques.
+A MLOps project and Chrome extension that detects fake news using a variety of classification models and machine learning techniques.
 
 ## Technologies and Concepts
 
